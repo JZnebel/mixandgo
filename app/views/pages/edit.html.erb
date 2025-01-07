@@ -1,0 +1,5 @@
+<div class="mx-auto md:w-2/3 w-full">
+  <h1 class="font-bold text-4xl">Edit Page for <%= @project.title %></h1>
+  <%= render "form", project: @project, page: @page %>
+  <%= link_to "Back to Project", project_path(@project), class: "mt-5 inline-block rounded-lg py-2 px-4 bg-gray-100 text-gray-800 font-medium" %>
+</div>

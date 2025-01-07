@@ -1,0 +1,87 @@
+<div class="mx-auto md:w-2/3 w-full">
+  <h1 class="font-bold text-4xl mb-5">Mark Up Project: <%= @project.title %></h1>
+
+  <div class="mb-5">
+    <%= link_to "Back to Project", project_path(@project), class: "rounded-lg py-2 px-4 bg-gray-100 text-gray-800 font-medium hover:bg-gray-200 transition" %>
+  </div>
+
+  <% if @project.screenshot.present? %>
+    <div 
+      data-controller="canvas"
+      data-canvas-image-url="<%= @project.screenshot %>"
+      data-canvas-project-id="<%= @project.id %>"
+      data-canvas-annotations="<%= @project.annotations.to_json %>"
+    >
+      <div class="mb-4 flex items-center gap-4">
+        <button 
+          data-action="click->canvas#setMode"
+          data-mode="note"
+          data-canvas-target="noteButton"
+          class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Add Note
+        </button>
+        <button 
+          data-action="click->canvas#setMode"
+          data-mode="draw"
+          data-canvas-target="drawButton"
+          class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        >
+          Draw
+        </button>
+        <input
+          type="color"
+          data-action="change->canvas#setColor"
+          class="w-10 h-10 p-1 border border-gray-300 rounded"
+          value="#0000ff"
+        >
+        <button
+          data-action="click->canvas#clearCanvas"
+          class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        >
+          Clear Canvas
+        </button>
+        <button data-action="click->canvas#downloadCanvas" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          Download Marked-Up Image
+        </button>
+      </div>
+
+      <canvas
+        data-canvas-target="canvas"
+        class="border border-gray-300"
+        style="cursor: crosshair;"
+      >
+        Your browser does not support HTML5 Canvas.
+      </canvas>
+
+      <div
+        data-canvas-target="noteInput"
+        class="hidden absolute bg-white p-4 border border-gray-300 rounded shadow-lg"
+        style="z-index: 1000;"
+      >
+        <input
+          type="text"
+          data-canvas-target="noteText"
+          class="w-full p-2 border border-gray-300 rounded mb-2"
+          placeholder="Enter your note..."
+        />
+        <div class="flex justify-end gap-2">
+          <button
+            data-action="click->canvas#cancelNote"
+            class="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600"
+          >
+            Cancel
+          </button>
+          <button
+            data-action="click->canvas#submitNote"
+            class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <p class="text-gray-600">No screenshot available for this project.</p>
+  <% end %>
+</div>
