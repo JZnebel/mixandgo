@@ -1,4 +1,3 @@
-
 # Web Feedback Tool
 
 A Rails application designed to streamline feedback for web developers by allowing clients to annotate screenshots of web pages. This app automates screenshot generation using Puppeteer, provides a canvas for markup, and enables easy sharing between clients and developers.
@@ -24,10 +23,11 @@ A Rails application designed to streamline feedback for web developers by allowi
 
 To run this project locally, ensure you have the following installed:
 
-- Ruby (version `3.x` recommended)
-- Rails
-- Node.js and Yarn
-- Puppeteer (installed via Node.js dependencies)
+- Ruby (version `3.3.0` recommended)
+- Rails (8.0.1)
+- Node.js and npm
+- Puppeteer (installed via npm dependencies)
+- PostgreSQL (download and install if not already available)
 - Tailwind CSS (integrated via Rails)
 
 ## Installation
@@ -48,22 +48,26 @@ To run this project locally, ensure you have the following installed:
 3. Install JavaScript dependencies, including Puppeteer:
 
    ```bash
-   yarn install
+   npm install
    ```
 
-4. Run the database migrations:
+4. Configure the database:
+   - Open `config/database.yml` and ensure it matches your PostgreSQL login credentials (e.g., username, password, host, and port).
+   - If you don’t have PostgreSQL installed, download it from [PostgreSQL Downloads](https://www.postgresql.org/download/) and set it up.
+
+5. Run the database migrations:
 
    ```bash
    rails db:migrate
    ```
 
-5. Start the Rails server and Puppeteer:
+6. Start the Rails server:
 
    ```bash
-   bin/dev
+   rails server
    ```
 
-6. Open your browser and navigate to `http://localhost:3000`.
+7. Open your browser and navigate to `http://localhost:3000`.
 
 ## Puppeteer Setup
 
@@ -73,6 +77,20 @@ Puppeteer is used for generating screenshots. If you encounter issues with Puppe
 ```bash
 sudo apt-get install -y libnss3 libxss1 libasound2
 ```
+
+### On Windows:
+- Ensure Google Chrome is installed.
+- If Puppeteer cannot find Chrome, you may need to modify the `screenshot.js` script to specify the correct path to Chrome or Chromium.
+
+#### Modifying `screenshot.js`:
+Edit the Puppeteer configuration to include the `executablePath`:
+```javascript
+const browser = await puppeteer.launch({
+  executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe', // Replace with your Chrome/Chromium path
+  args: ['--no-sandbox', '--disable-setuid-sandbox'],
+});
+```
+Replace the path with the actual location of your `chrome.exe` or Chromium binary.
 
 ## Key Features
 
@@ -89,6 +107,20 @@ sudo apt-get install -y libnss3 libxss1 libasound2
 ### Secure Access
 - User authentication is handled with Devise to ensure only authorized users can access project resources.
 
+## Troubleshooting
+
+### Screenshots Not Working
+- Ensure Puppeteer is correctly installed by running:
+  ```bash
+  npm install puppeteer
+  ```
+- Verify that Chrome/Chromium is installed and accessible.
+- If screenshots fail, check the `screenshot.js` script and update the `executablePath` to point to the correct Chrome/Chromium binary on your system.
+
+### Database Issues
+- If you encounter database connection errors, double-check the `config/database.yml` file to ensure it matches your PostgreSQL setup.
+- Ensure the PostgreSQL server is running.
+
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the LICENSE file for details.
@@ -99,3 +131,4 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 - **[Puppeteer](https://pptr.dev/)**: Headless browser for screenshot generation.
 - **[Tailwind CSS](https://tailwindcss.com/)**: Utility-first CSS framework.
 - **[Devise](https://github.com/heartcombo/devise)**: Authentication framework.
+
