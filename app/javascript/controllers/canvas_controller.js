@@ -43,69 +43,14 @@ export default class extends Controller {
     this.canvasTarget.addEventListener("mouseout", () => this.handleMouseUp())
   }
 
-async saveNote(text, x, y) {
-    const url = "/annotations";
-    const data = {
-      annotation: {
-        content: text,
-        x_position: x,
-        y_position: y,
-        annotation_type: "note",
-        project_id: this.element.dataset.canvasProjectId
-      }
-    };
-  
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
-        },
-        body: JSON.stringify(data)
-      });
-  
-      if (!response.ok) throw new Error("Failed to save annotation");
-      const result = await response.json();
-      console.log("Annotation saved:", result);
-  
-      this.undoStack.push({ type: "note", data: result });
-    } catch (error) {
-      console.error("Error saving annotation:", error);
-    }
+  async saveNote() {
+
   }
   
-  async saveDrawing(points, color) {
-    const url = "/annotations";
-    const data = {
-      annotation: {
-        content: JSON.stringify({ points, color }),
-        x_position: points[0][0],
-        y_position: points[0][1],
-        annotation_type: "drawing",
-        project_id: this.element.dataset.canvasProjectId
-      }
-    };
-  
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
-        },
-        body: JSON.stringify(data)
-      });
-  
-      if (!response.ok) throw new Error("Failed to save drawing");
-      const result = await response.json();
-      console.log("Drawing saved:", result);
-  
-      this.undoStack.push({ type: "drawing", data: result });
-    } catch (error) {
-      console.error("Error saving drawing:", error);
-    }
+  async saveDrawing() {
+
   }
+  
 
   setMode(event) {
     this.mode = event.target.dataset.mode

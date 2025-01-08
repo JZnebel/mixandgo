@@ -10,6 +10,8 @@
       data-controller="canvas"
       data-canvas-image-url="<%= @page.screenshot %>"
       data-canvas-annotations="<%= @page.annotations.to_json %>"
+      data-canvas-project-id="<%= @page.project.id %>"
+      data-canvas-page-id="<%= @page.id %>"
     >
       <div class="mb-4 flex items-center gap-4">
         <button 
