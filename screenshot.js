@@ -1,11 +1,18 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
+const os = require('os'); // Import the os module
 
 const takeScreenshot = async (url, outputPath) => {
   try {
+    // Detect the OS and set the Chrome/Chromium executable path
+    const isWindows = os.platform() === 'win32';
+    const executablePath = isWindows
+      ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe' // Windows default path
+      : '/usr/bin/chromium-browser'; // Ubuntu default path
+
     const browser = await puppeteer.launch({
-      executablePath: '/usr/bin/chromium-browser',
+      executablePath: executablePath,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 
