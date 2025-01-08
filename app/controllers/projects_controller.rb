@@ -20,19 +20,26 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = current_user.projects.new(project_params) 
-
+    @project = current_user.projects.new(project_params)
+  
     respond_to do |format|
       if @project.save
-        generate_screenshot(@project)
-        format.html { redirect_to @project, notice: "Project was successfully created." }
-        format.json { render :show, status: :created, location: @project }
+        begin
+          generate_screenshot(@project)
+          format.html { redirect_to @project, notice: "Project was successfully created." }
+          format.json { render :show, status: :created, location: @project }
+        rescue => e
+          @project.destroy # Clean up invalid project
+          format.html { redirect_to new_project_path, alert: "Failed to generate screenshot. Please ensure the URL is valid and accessible." }
+          format.json { render json: { error: "Failed to generate screenshot" }, status: :unprocessable_entity }
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end
     end
   end
+  
 
   def update
     respond_to do |format|
